@@ -12,9 +12,9 @@ void isa_reg_display() {
   rtlreg_t reg;
   for(int i = 0; i < regNum; i++){
     reg = reg_l(i);
-    printf("%-6s %-#10x %-10d\n", reg_name(i, sizeof(reg) * 8), reg, reg);
+    printf("%-6s 0x%-10x %-10d\n", reg_name(i, sizeof(reg) * 8), reg, reg);
   }
-  printf("%-6s %#10x %10d\n", "pc", cpu.pc, cpu.pc);
+  printf("%-6s 0x%10x %10d\n", "pc", cpu.pc, cpu.pc);
 }
 
 uint32_t isa_reg_str2val(const char *s, bool *success) {
