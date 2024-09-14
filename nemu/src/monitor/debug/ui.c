@@ -59,7 +59,24 @@ static int cmd_info(char *args){
   return 0;
 }
 
+static int cmd_x(char *args) { 
+  char *arg = strtok(args, " ");
+  int n = atoi(arg);
+  arg = strtok(NULL, " ");
+  if (arg == NULL) return 0;
 
+  vaddr_t addr = strtol(arg, NULL, 16);
+  for (int i = 0; i < n; i++) {
+    printf("0x%08x: ", addr);
+    for (int j = 0; j < 4; j++) {
+      printf("%02x ", vaddr_read(addr, 1));
+      addr++;
+    }
+    printf("\n");
+  }
+  return 0;
+
+}
 
 static int cmd_help(char *args);
 
@@ -75,6 +92,7 @@ static struct {
   /* TODO: Add more commands */
   { "si", "si [N] exec n steps",cmd_si},
   { "info", "info r/w print regs or memory",cmd_info},
+  { "x", " x N EXPR", cmd_x }, 
 };
 
 #define NR_CMD (sizeof(cmd_table) / sizeof(cmd_table[0]))
