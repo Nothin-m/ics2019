@@ -12,7 +12,7 @@ void isa_reg_display() {
   rtlreg_t reg;
   for(int i = 0; i < regNum; i++){
     reg = reg_l(i);
-    printf("%-6s %#10x %10d\n", reg_name(i, sizeof(reg) * 8), reg, reg);
+    printf("%-6s %-#10x %-10d\n", reg_name(i, sizeof(reg) * 8), reg, reg);
   }
   printf("%-6s %#10x %10d\n", "pc", cpu.pc, cpu.pc);
 }
