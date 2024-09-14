@@ -37,10 +37,14 @@ static int cmd_q(char *args) {
 }
 
 static int cmd_si(char *args) {
-  int n;
-  if (args == NULL) cpu_exec(1);
-  sscanf(args, "%d", &n);
-  cpu_exec(n);
+ 
+  if (args == NULL) {
+    cpu_exec(1);
+  } else {
+    int n;
+    sscanf(args, "%d", &n);
+    cpu_exec(n);
+  }
   return 0;
 }
 
