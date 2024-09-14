@@ -8,8 +8,9 @@
 #include <readline/history.h>
 
 void cpu_exec(uint64_t);
-
-/* We use the `readline' library to provide more flexibility to read from stdin. */
+void isa_reg_display();
+/* We use the `readline' library to provide more flexibility to read from stdin.
+ */
 static char* rl_gets() {
   static char *line_read = NULL;
 
@@ -48,6 +49,18 @@ static int cmd_si(char *args) {
   return 0;
 }
 
+static int cmd_info(char *args){
+  char op;
+  sscanf(args, "%c", &op);
+  if(op=='r'){
+    isa_reg_display();
+  } else if (op == 'w') {
+  }
+  return 0;
+}
+
+
+
 static int cmd_help(char *args);
 
 static struct {
@@ -61,6 +74,7 @@ static struct {
 
   /* TODO: Add more commands */
   { "si", "si [N] exec n steps",cmd_si},
+  { "info", "info r/w print regs or memory",cmd_info},
 };
 
 #define NR_CMD (sizeof(cmd_table) / sizeof(cmd_table[0]))
