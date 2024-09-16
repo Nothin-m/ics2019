@@ -137,7 +137,7 @@ int check_parentheses(int p, int q) {
     result = 1;
     for (int i = p + 1; i <= q - 1; i++) {
       if(layer < 0){
-        Log("bad exp");
+        // Log("bad exp");
         return 0;
         // result = 0;  // 0 or -1
         // break;
@@ -150,7 +150,7 @@ int check_parentheses(int p, int q) {
   layer = 0;
   for (int i = p; i <= q; i++) {
     if (layer < 0) {
-      Log("bad exp");
+      // Log("bad exp");
       return 0;
       // result = 0;
       // break;
@@ -230,9 +230,9 @@ uint32_t eval(int p, int q, bool* success){
     // Log("Bad expression, [%d, %d]\n", p, q);
     // *success = false;
     // return 0;
-  } else if (check == 1) {
-    return eval(p + 1, q - 1, success);
-  } else {
+  // } else if (check == 1) {
+  //   return eval(p + 1, q - 1, success);
+  // } else {
     uint32_t op = findMainOp(p, q);
     Log("min op = %d", op);
     uint32_t val1 = 0;
