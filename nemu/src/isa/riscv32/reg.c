@@ -18,5 +18,18 @@ void isa_reg_display() {
 }
 
 uint32_t isa_reg_str2val(const char *s, bool *success) {
+  for (int i = 0; i < 32; i++) {
+    if(!strcmp(s,regsl[i])){
+      *success = true;
+      return cpu.gpr[i]._32;
+    }
+  }
+
+  if(!strcmp(s,"pc")){
+    *success = true;
+    return cpu.pc;
+  }
+
+  *success = false;
   return 0;
 }
