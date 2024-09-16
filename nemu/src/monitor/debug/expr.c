@@ -229,8 +229,8 @@ uint32_t eval(int p, int q, bool* success){
   uint32_t op = findMainOp(p, q);
   Log("min op = %d", op);
 
-  
-  if (check == 0) {
+
+  if (check == 0 && op==0) {
     Log("Bad expression, [%d, %d]\n", p, q);
     *success = false;
     return 0;
