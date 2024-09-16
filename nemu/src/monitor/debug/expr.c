@@ -131,9 +131,6 @@ int parse(Token tk) {
 }
 
 
-
-
-
 // result case: 1-> (exp), 0 -> wrong exp, -1 -> exp
 int check_parentheses(int p, int q) {
   int result = -1;
@@ -241,10 +238,12 @@ uint32_t eval(int p, int q, bool* success){
     return eval(p + 1, q - 1, success);
   } else {
     uint32_t op = findMainOp(p, q);
-		uint32_t val1 = 0;
+    uint32_t val1 = 0;
 
-    if(*success==false){
-    	return 0;
+    val1 = eval(p, op - 1, success);
+
+    if (*success == false) {
+      return 0;
 		}
     uint32_t val2 = eval(op+1, q, success);
     if(*success==false){
