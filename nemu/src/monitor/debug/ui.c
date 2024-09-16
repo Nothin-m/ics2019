@@ -68,7 +68,14 @@ static int cmd_x(char *args) {
   arg = strtok(NULL, " ");
   if (arg == NULL) return 0;
 
-  vaddr_t addr = strtol(arg, NULL, 16);
+  bool success = true;
+
+  vaddr_t addr = expr(arg, &success);
+
+  if(success == false ){
+    printf("bad expression %s \n", arg);
+    return 0;
+  }
   for (int i = 0; i < n; i++) {
     printf("0x%08x: ", addr);
     for (int j = 0; j < 4; j++) {
