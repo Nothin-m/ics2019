@@ -326,6 +326,36 @@ uint32_t expr(char *e, bool *success) {
   /* TODO: Insert codes to evaluate the expression. */
   // TODO();
 
+	/* 指针类型*/
+  for (int i = 0; i < nr_token; i++) {
+    if (i == 0 ||
+            (tokens[i - 1].type != TK_REG && tokens[i - 1].type != TK_DECIMAL &&
+             tokens[i - 1].type != TK_HEXADECIMAL &&
+             tokens[i - 1].type != ')' && tokens[i - 1].type != TK_POSNUM &&
+             tokens[i - 1].type != TK_NEGNUM))
+      if (tokens[i].type == '*') tokens[i].type = TK_DEREFERENCE;
+  }
+
+  /* NEG OR POS NUMBER TYPE */
+  for (int i = 0; i < nr_token; i++) {
+    if (i == 0 ||
+            (tokens[i - 1].type != TK_REG && tokens[i - 1].type != TK_DECIMAL &&
+             tokens[i - 1].type != TK_HEXADECIMAL &&
+             tokens[i - 1].type != ')' &&
+             tokens[i - 1].type != TK_DEREFERENCE &&
+             tokens[i - 1].type != TK_POSNUM &&
+             tokens[i - 1].type != TK_NEGNUM)) {
+      switch (tokens[i].type) {
+        case '+':
+          tokens[i].type = TK_POSNUM;
+          break;
+        case '-':
+          tokens[i].type = TK_NEGNUM;
+          break;
+      }
+    }
+  }
+
   *success = true;
 
   return eval(0, nr_token - 1, success);
