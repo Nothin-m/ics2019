@@ -78,6 +78,17 @@ static int cmd_x(char *args) {
 
 }
 
+static int cmd_p(char * args){
+  if (args == NULL) return 0;
+  bool success = true;
+  uint32_t res = expr(args, &success);
+  if(success){
+    printf("%s  =  %d\n", args, res);
+  }
+  return 0;
+}
+
+
 static int cmd_help(char *args);
 
 static struct {
@@ -93,6 +104,7 @@ static struct {
   { "si", "si [N] exec n steps",cmd_si},
   { "info", "info r/w print regs or memory",cmd_info},
   { "x", " x N EXPR", cmd_x }, 
+  { "p", "p expr ", cmd_p },
 };
 
 #define NR_CMD (sizeof(cmd_table) / sizeof(cmd_table[0]))
