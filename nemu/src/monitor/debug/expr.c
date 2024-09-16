@@ -30,12 +30,10 @@ static struct rule {
     {"\\*", '*'},       //
     {"/", '/'},         //
 
-    {"\\(", '('},  //
-    {"\\)", ')'},  //
-
+    {"\\(", '('},            //
+    {"\\)", ')'},            //
     {"[0-9]+", TK_DECIMAL},  //
 };
-
 
 #define NR_REGEX (sizeof(rules) / sizeof(rules[0]) )
 
@@ -139,10 +137,10 @@ int check_parentheses(int p, int q) {
     result = 1;
     for (int i = p + 1; i <= q - 1; i++) {
       if(layer < 0){
-        // Log("bad exp");
-        // return 0;
-        result = 0;  // 0 or -1
-        break;
+        Log("bad exp");
+        return 0;
+        // result = 0;  // 0 or -1
+        // break;
       }
       if (tokens[i].type == '(') layer++;
       if (tokens[i].type == ')') layer--;
@@ -152,17 +150,17 @@ int check_parentheses(int p, int q) {
   layer = 0;
   for (int i = p; i <= q; i++) {
     if (layer < 0) {
-      // Log("bad exp");
-      // return 0;
-      result = 0;
-      break;
+      Log("bad exp");
+      return 0;
+      // result = 0;
+      // break;
     }
     if (tokens[i].type == '(') layer++;
     if (tokens[i].type == ')') layer--;
   }
-  if (layer != 0) {
-    return 0;
-  }
+
+  if (layer != 0) return 0;
+
   return result;
 }
 
@@ -178,7 +176,7 @@ int op_precedence(int type) {
     case TK_NOTEQ:
       return 2;
   }
-    return 0;
+  return 0;
 }
 
 
@@ -203,17 +201,14 @@ uint32_t findMainOp(int p, int q) {
         precedence = tmp;
       }
     } else {
-      if (tokens[i].type == ')') {
-        layer--;
-      } else if (tokens[i].type == '(') {
-        layer++;
-      }
+      if (tokens[i].type == ')') layer--;
+      else if (tokens[i].type == '(') layer++;
     }
-    }
-    if (layer != 0 || precedence == 0) {
-        Log("Bad expression at [%d %d]\n", p, q);
-    }
-    return res;
+  }
+
+  if (layer != 0 || precedence == 0) Log("Bad expression at [%d %d]\n", p, q);
+
+  return res;
 }
 
 uint32_t eval(int p, int q, bool* success){
@@ -230,7 +225,6 @@ uint32_t eval(int p, int q, bool* success){
     return parse(tokens[p]);
   }
 
-
   int check = check_parentheses(p, q);
   if (check == 0) {
     Log("Bad expression, [%d, %d]\n", p, q);
@@ -243,27 +237,28 @@ uint32_t eval(int p, int q, bool* success){
     uint32_t val1 = 0;
 
     val1 = eval(p, op - 1, success);
+
     if (*success == false) {
-      Log("calculate false  p=%d q=%d vla1=%d", p, q, val1);
+      Log("calculate false  p = %d q = %d vla1 = %d", p, q, val1);
       return 0;
     }
-    uint32_t val2 = eval(op+1, q, success);
-    if(*success==false){
-      Log("calculate false  p=%d q=%d vla2=%d", p, q, val2);
+    uint32_t val2 = eval(op + 1, q, success);
+    if (*success == false) {
+      Log("calculate false  p = %d q = %d vla2 = %d", p, q, val2);
     	return 0;
-		}
+    }
     switch (tokens[op].type){
 	
-      case '+':  return val1+val2;
-      case '-':  return val1-val2;
-      case '*':  return val1*val2;
-      case '/': if(val2==0){  Log("Divide by 0 !\n");  *success=false; return 0;  }
+      case '+':  return val1 + val2;
+      case '-':  return val1 - val2;
+      case '*':  return val1 * val2;
+      case '/':  if(val2 == 0){  Log("Divide by 0 !\n");  *success=false; return 0;  }
         // printf("val1:%u / val2:%u\n", val1, val2);
                    return val1 / val2;
       case TK_EQ:  return val1 == val2;
       case TK_NOTEQ: return val1 != val2;
 
-      default: {  Log("Bad expression !\n"); *success = false; return 0; }
+      default: {  Log("Bad expression !\n"); *success = false; return 0;  }
     }
   }
 }
