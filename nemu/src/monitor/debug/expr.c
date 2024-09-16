@@ -139,10 +139,10 @@ int check_parentheses(int p, int q) {
     result = 1;
     for (int i = p + 1; i <= q - 1; i++) {
       if(layer < 0){
-        Log("bad exp");
-        return 0;
-        // result = 0;  // 0 or -1
-        // break;
+        // Log("bad exp");
+        // return 0;
+        result = 0;  // 0 or -1
+        break;
       }
       if (tokens[i].type == '(') layer++;
       if (tokens[i].type == ')') layer--;
@@ -152,10 +152,10 @@ int check_parentheses(int p, int q) {
   layer = 0;
   for (int i = p; i <= q; i++) {
     if (layer < 0) {
-      Log("bad exp");
-      return 0;
-      // result = 0;
-      // break;
+      // Log("bad exp");
+      // return 0;
+      result = 0;
+      break;
     }
     if (tokens[i].type == '(') layer++;
     if (tokens[i].type == ')') layer--;
@@ -216,7 +216,6 @@ uint32_t findMainOp(int p, int q) {
     return res;
 }
 
-
 uint32_t eval(int p, int q, bool* success){
   if (p > q) {
     Log("Bad expression. p>q \n");
@@ -268,8 +267,6 @@ uint32_t eval(int p, int q, bool* success){
     }
   }
 }
-
-
 
 
 
