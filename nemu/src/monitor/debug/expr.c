@@ -122,7 +122,7 @@ int parse(Token tk) {
           return strtol(tk.str, &ptr, 10);
 
         default: {
-          LOG("cannot parse number\n");
+          Log("cannot parse number\n");
           assert(0);
         }
     }
@@ -192,7 +192,7 @@ uint32_t findMainOp(int p, int q) {
         continue;
       }
       if (type == ')') {
-        LOG("Bad expression at [%d %d]\n", p, q);
+        Log("Bad expression at [%d %d]\n", p, q);
         return 0;
       }
       int type_prcedence = op_precedence(type);
@@ -210,7 +210,7 @@ uint32_t findMainOp(int p, int q) {
     }
     }
     if (layer != 0 || precedence == 0) {
-        printf("Bad expression at [%d %d]\n", p, q);
+        Log("Bad expression at [%d %d]\n", p, q);
     }
     return op;
 }
@@ -218,12 +218,12 @@ uint32_t findMainOp(int p, int q) {
 
 uint32_t eval(int p, int q, bool* success){
   if (p > q) {
-    LOG("Bad expression. p>q \n");
+    Log("Bad expression. p>q \n");
     *success = false;
     return 0;
   } else if (p == q) {
     if (tokens[p].type != TK_DECIMAL) {
-      LOG("Bad expression. Single token is wrong. \n");
+      Log("Bad expression. Single token is wrong. \n");
       *success = false;
       return 0;
     }
@@ -233,7 +233,7 @@ uint32_t eval(int p, int q, bool* success){
 
   int check = check_parentheses(p, q);
   if (check == 0) {
-    LOG("Bad expression, [%d, %d]\n", p, q);
+    Log("Bad expression, [%d, %d]\n", p, q);
     *success = false;
     return 0;
   } else if (check == 1) {
@@ -254,13 +254,13 @@ uint32_t eval(int p, int q, bool* success){
       case '+':  return val1+val2;
       case '-':  return val1-val2;
       case '*':  return val1*val2;
-      case '/': if(val2==0){  LOG("Divide by 0 !\n");  *success=false; return 0;  }
+      case '/': if(val2==0){  Log("Divide by 0 !\n");  *success=false; return 0;  }
         // printf("val1:%u / val2:%u\n", val1, val2);
                    return val1 / val2;
       case TK_EQ:  return val1 == val2;
       case TK_NOTEQ: return val1 != val2;
 
-      default: {  LOG("Bad expression !\n"); *success = false; return 0; }
+      default: {  Log("Bad expression !\n"); *success = false; return 0; }
     }
   }
 }
