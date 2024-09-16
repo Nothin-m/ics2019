@@ -53,8 +53,9 @@ static struct rule {
     {">=", TK_GREATEREQ},
     {"<", TK_LESS},
     {">", TK_GREATER},
+     {"0[xX][0-9a-fA-F]+", TK_HEXADECIMAL},
     {"[0-9]+", TK_DECIMAL},  //
-    {"0[xX][0-9a-fA-F]+", TK_HEXADECIMAL},
+   
     {"\\$0|ra|[sgt]p|t[0-6]|a[0-7]|s([0-9]|1[0-1])", TK_REG},
 };
 
