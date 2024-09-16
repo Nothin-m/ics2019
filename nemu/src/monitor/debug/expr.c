@@ -167,19 +167,19 @@ int op_precedence(int type) {
   switch (type) {
     case '*':
     case '/':
-      return 3;
+      return 1;
     case '+':
     case '-':
     case TK_EQ:
     case TK_NOTEQ:
-      return 7;
+      return 2;
   }
     return 0;
 }
 
 
 uint32_t findMainOp(int p, int q) {
-  uint32_t op = p;
+  uint32_t res = p;
   int layer = 0;
   int precedence = 0;
   for (int i = p; i <= q; i++) {
@@ -193,16 +193,15 @@ uint32_t findMainOp(int p, int q) {
         Log("Bad expression at [%d %d]\n", p, q);
         return 0;
       }
-      int type_prcedence = op_precedence(type);
-      if (type_prcedence >= precedence) {
-        op = i;
-        precedence = type_prcedence;
+      int tmp = op_precedence(type);
+      if (tmp >= precedence) {
+        res = i;
+        precedence = tmp;
       }
     } else {
       if (tokens[i].type == ')') {
         layer--;
-      }
-      if (tokens[i].type == '(') {
+      } else if (tokens[i].type == '(') {
         layer++;
       }
     }
@@ -210,7 +209,7 @@ uint32_t findMainOp(int p, int q) {
     if (layer != 0 || precedence == 0) {
         Log("Bad expression at [%d %d]\n", p, q);
     }
-    return op;
+    return res;
 }
 
 

@@ -60,6 +60,9 @@ static int cmd_info(char *args){
 }
 
 static int cmd_x(char *args) { 
+  if (args == NULL){
+    return 0;
+  }
   char *arg = strtok(args, " ");
   int n = atoi(arg);
   arg = strtok(NULL, " ");
