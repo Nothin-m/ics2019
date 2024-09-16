@@ -226,15 +226,18 @@ uint32_t eval(int p, int q, bool* success){
   }
 
   int check = check_parentheses(p, q);
+  uint32_t op = findMainOp(p, q);
+  Log("min op = %d", op);
+
+  
   if (check == 0) {
-    // Log("Bad expression, [%d, %d]\n", p, q);
-    // *success = false;
-    // return 0;
-  // } else if (check == 1) {
-  //   return eval(p + 1, q - 1, success);
-  // } else {
-    uint32_t op = findMainOp(p, q);
-    Log("min op = %d", op);
+    Log("Bad expression, [%d, %d]\n", p, q);
+    *success = false;
+    return 0;
+  } else if (check == 1) {
+    return eval(p + 1, q - 1, success);
+  } else {
+   
     uint32_t val1 = 0;
 
     val1 = eval(p, op - 1, success);
