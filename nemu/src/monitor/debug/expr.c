@@ -241,12 +241,13 @@ uint32_t eval(int p, int q, bool* success){
     uint32_t val1 = 0;
 
     val1 = eval(p, op - 1, success);
-
     if (*success == false) {
+      Log("calculate false  p=%d q=%d vla1=%d", p, q, val1);
       return 0;
-		}
+    }
     uint32_t val2 = eval(op+1, q, success);
     if(*success==false){
+      Log("calculate false  p=%d q=%d vla2=%d", p, q, val2);
     	return 0;
 		}
     switch (tokens[op].type){
