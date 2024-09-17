@@ -25,15 +25,19 @@ void init_wp_pool() {
 WP *new_wp(char* expression) {
   WP *res = free_;
   if (res == NULL) assert(0);
+
   free_ = free_->next;
+
   res->next = head;
   head = res;
+
   res->expression = (char *)malloc(strlen(expression) * sizeof(char));
   strcpy(res->expression, expression);
   bool success;
   res->value = expr(res->expression, &success);
   res->old_value = res->value;
   res->enable = true;
+
   return res;
 }
 
@@ -87,7 +91,7 @@ bool change_wp() {
     int val = expr(ptr->expression, &success);
     ptr->old_value = ptr->value;
     ptr->value = val;
-    if(ptr->value!=ptr->old_value){
+    if(ptr->value != ptr->old_value){
       has_changed = true;
     }
   }
