@@ -55,6 +55,7 @@ static int cmd_info(char *args){
   if(op=='r'){
     isa_reg_display();
   } else if (op == 'w') {
+    print_wp();
   }
   return 0;
 }
@@ -88,13 +89,26 @@ static int cmd_x(char *args) {
 
 }
 
-static int cmd_p(char * args){
+static int cmd_p(char *args) {
   if (args == NULL) return 0;
   bool success = true;
   uint32_t res = expr(args, &success);
   if(success){
     printf("%s  =  %d\n", args, res);
   }
+  return 0;
+}
+
+static int cmd_w(char *args) {
+  if (args == NULL) return 0;
+
+  new_wp(args);
+  return 0;
+}
+
+static int cmd_d(char *args){
+  if (args == NULL) return 0;
+  delete_wp(atoi(args));
   return 0;
 }
 
@@ -115,6 +129,8 @@ static struct {
   { "info", "info r/w print regs or memory",cmd_info},
   { "x", " x N EXPR", cmd_x }, 
   { "p", "p expr ", cmd_p },
+  { "w", "w expr ", cmd_w },
+  { "d", "d N", cmd_d },
 };
 
 #define NR_CMD (sizeof(cmd_table) / sizeof(cmd_table[0]))
