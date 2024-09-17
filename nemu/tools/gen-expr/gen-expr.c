@@ -48,7 +48,8 @@ void gen(char c){
  void gen_rand_expr() {
   // if (nr_tokens + 3 >= NR_TOKENS) return;
   switch (choose(3)){
-    case 0:  gen_num();  break;
+    case 0:  if (nr_tokens + 1 >= NR_TOKENS) return;
+             gen_num();  break;
     case 1:  if (nr_tokens + 3 >= NR_TOKENS) return;
              gen('(');  gen_rand_expr();  gen(')');  break;
     case 2:  if (nr_tokens + 3 >= NR_TOKENS) return;
