@@ -1,3 +1,6 @@
+#include <stdlib.h>
+#include <string.h>
+
 #include "monitor/watchpoint.h"
 #include "monitor/expr.h"
 
