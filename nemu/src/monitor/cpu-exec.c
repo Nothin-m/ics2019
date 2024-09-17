@@ -65,6 +65,8 @@ void cpu_exec(uint64_t n) {
       nemu_state.state = NEMU_STOP;
       print_wp();
     }
+
+    
 #endif
 
   g_nr_guest_instr ++;
