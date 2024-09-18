@@ -14,8 +14,6 @@ make_EHelper(auipc){
 }
 
 
-
-
 make_EHelper(imm){
   switch(decinfo.isa.instr.funct3){
     case 0:                                              // addi
@@ -72,7 +70,7 @@ make_EHelper(imm){
 
 make_EHelper(reg){
   switch (decinfo.isa.instr.funct3) {
-    case 0:  // add  &&  sub  &&  mul
+    case 0:                                       // add  &&  sub  &&  mul
       if (decinfo.isa.instr.funct7 == 0b0000000) {        // add
         rtl_add(&id_dest->val, &id_src->val, &id_src2->val);
         rtl_sr(id_dest->reg, &id_dest->val, 4);
@@ -87,7 +85,7 @@ make_EHelper(reg){
         print_asm_template3(mul);
       }
       break;
-    case 1:  // sll&&mulh
+    case 1:                                             // sll&&mulh
       if (decinfo.isa.instr.funct7 == 0b0000000) {        // sll
         rtl_shl(&id_dest->val, &id_src->val, &id_src2->val);
         rtl_sr(id_dest->reg, &id_dest->val, 4);
@@ -98,17 +96,17 @@ make_EHelper(reg){
         print_asm_template3(mulh);
       }
       break;
-    case 2:  // slt
+    case 2:                                                  // slt
       id_dest->val = (signed)id_src->val < (signed)id_src2->val;
       rtl_sr(id_dest->reg, &id_dest->val, 4);
       print_asm_template3(slt);
       break;
-    case 3:  // sltu
+    case 3:                                               // sltu
       id_dest->val = (unsigned)id_src->val < (unsigned)id_src2->val;
       rtl_sr(id_dest->reg, &id_dest->val, 4);
       print_asm_template3(sltu);
       break;
-    case 4:  // xor&&div
+    case 4:                                              // xor&&div
       if (decinfo.isa.instr.funct7 == 0b0000000) {          // xor
         rtl_xor(&id_dest->val, &id_src->val, &id_src2->val);
         rtl_sr(id_dest->reg, &id_dest->val, 4);
