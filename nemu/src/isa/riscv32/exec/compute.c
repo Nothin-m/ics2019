@@ -119,12 +119,38 @@ make_EHelper(reg){
         print_asm_template3(div);
       }
       break;
+    case 5:  // srl&&sra&&divu
+      if (decinfo.isa.instr.funct7 == 0b0000000) {  // srl
+        rtl_shr(&id_dest->val, &id_src->val, &id_src2->val);
+        rtl_sr(id_dest->reg, &id_dest->val, 4);
+        print_asm_template2(srl);
+      } else if (decinfo.isa.instr.funct7 == 0b0100000) {  // sra
+        rtl_sar(&id_dest->val, &id_src->val, &id_src2->val);
+        rtl_sr(id_dest->reg, &id_dest->val, 4);
+        print_asm_template2(sra);
+      } else if (decinfo.isa.instr.funct7 == 0b0000001) {  // divu
+        rtl_div_q(&id_dest->val, &id_src->val, &id_src2->val);
+        rtl_sr(id_dest->reg, &id_dest->val, 4);
+        print_asm_template3(divu);
+      }
+      break;
+    case 6:  // or&&rem
+      if (decinfo.isa.instr.funct7 == 0b0000000) {  // or
+        rtl_or(&id_dest->val, &id_src->val, &id_src2->val);
+        rtl_sr(id_dest->reg, &id_dest->val, 4);
+        print_asm_template3(or);
+      } else if (decinfo.isa.instr.funct7 == 0b0000001) {  // rem
+        rtl_idiv_r(&id_dest->val, &id_src->val, &id_src2->val);
+        rtl_sr(id_dest->reg, &id_dest->val, 4);
+        print_asm_template3(rem);
+      }
+      break;
     case 7:  // and&&remu
-      if (decinfo.isa.instr.funct7 == 0b0000000) {            // and
+      if (decinfo.isa.instr.funct7 == 0b0000000) {  // and
         rtl_and(&id_dest->val, &id_src->val, &id_src2->val);
         rtl_sr(id_dest->reg, &id_dest->val, 4);
         print_asm_template3(and);
-      } else if (decinfo.isa.instr.funct7 == 0b0000001) {    // remu
+      } else if (decinfo.isa.instr.funct7 == 0b0000001) {  // remu
         rtl_div_r(&id_dest->val, &id_src->val, &id_src2->val);
         rtl_sr(id_dest->reg, &id_dest->val, 4);
         print_asm_template3(remu);
