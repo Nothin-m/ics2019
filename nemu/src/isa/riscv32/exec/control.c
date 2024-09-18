@@ -21,3 +21,16 @@ make_EHelper(jalr){
 
   print_asm_template2(jalr);
 }
+
+
+
+
+make_EHelper(branch){
+  decinfo.jmp_pc = cpu.pc + id_dest->val;
+  switch (decinfo.isa.instr.funct3) {
+    case 0:  // beq
+      rtl_jrelop(RELOP_EQ, &id_src->val, &id_src2->val, decinfo.jmp_pc);
+      print_asm_template2(beq);
+      break;
+  }
+}
