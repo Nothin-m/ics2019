@@ -24,3 +24,27 @@ make_EHelper(imm){
       break;
   }
 }
+
+
+
+
+make_EHelper(reg){
+  switch (decinfo.isa.instr.funct3) {
+    case 0:  // add&&sub&&mul
+      if (decinfo.isa.instr.funct7 == 0b0000000) {  // add
+        rtl_add(&id_dest->val, &id_src->val, &id_src2->val);
+        rtl_sr(id_dest->reg, &id_dest->val, 4);
+        print_asm_template3(add);
+      } else if (decinfo.isa.instr.funct7 == 0b0100000) {  // sub
+        rtl_sub(&id_dest->val, &id_src->val, &id_src2->val);
+        rtl_sr(id_dest->reg, &id_dest->val, 4);
+        print_asm_template3(sub);
+      } else if (decinfo.isa.instr.funct7 == 0b0000001) {  // mul
+        rtl_imul_lo(&id_dest->val, &id_src->val, &id_src2->val);
+        rtl_sr(id_dest->reg, &id_dest->val, 4);
+        print_asm_template3(mul);
+      }
+      break;
+   
+  }
+}
