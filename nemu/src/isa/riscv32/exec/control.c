@@ -27,27 +27,27 @@ make_EHelper(jalr){
 make_EHelper(branch){
   decinfo.jmp_pc = cpu.pc + id_dest->val;
   switch (decinfo.isa.instr.funct3) {
-    case 0:  // beq
+    case 0:                                                            // beq
       rtl_jrelop(RELOP_EQ, &id_src->val, &id_src2->val, decinfo.jmp_pc);
       print_asm_template2(beq);
       break;
-    case 1:  // bne
+    case 1:                                                            // bne
       rtl_jrelop(RELOP_NE, &id_src->val, &id_src2->val, decinfo.jmp_pc);
       print_asm_template2(bne);
       break;
-    case 4:  // blt
+    case 4:                                                            // blt
       rtl_jrelop(RELOP_LT, &id_src->val, &id_src2->val, decinfo.jmp_pc);
       print_asm_template2(blt);
       break;
-    case 5:  // bge
+    case 5:                                                           // bge
       rtl_jrelop(RELOP_GE, &id_src->val, &id_src2->val, decinfo.jmp_pc);
       print_asm_template2(bge);
       break;
-    case 6:  // bltu
+    case 6:                                                           // bltu
       rtl_jrelop(RELOP_LTU, &id_src->val, &id_src2->val, decinfo.jmp_pc);
       print_asm_template2(bltu);
       break;
-    case 7:  // bgeu
+    case 7:                                                           // bgeu
       rtl_jrelop(RELOP_GEU, &id_src->val, &id_src2->val, decinfo.jmp_pc);
       print_asm_template2(bgeu);
       break;
