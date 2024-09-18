@@ -145,7 +145,7 @@ make_EHelper(reg){
         print_asm_template3(rem);
       }
       break;
-    case 7:  // and&&remu
+    case 7:                                        // and&&remu
       if (decinfo.isa.instr.funct7 == 0b0000000) {  // and
         rtl_and(&id_dest->val, &id_src->val, &id_src2->val);
         rtl_sr(id_dest->reg, &id_dest->val, 4);
