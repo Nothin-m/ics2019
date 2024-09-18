@@ -15,12 +15,54 @@ make_EHelper(auipc){
 
 
 
+
 make_EHelper(imm){
   switch(decinfo.isa.instr.funct3){
-    case 0:  // addi
+    case 0:                                              // addi
       rtl_add(&id_dest->val, &id_src->val, &id_src2->val);
       rtl_sr(id_dest->reg, &id_dest->val, 4);
       print_asm_template2(addi);
+      break;
+    case 1:                                               //slli
+      rtl_shl(&id_dest->val, &id_src->val, &id_src2->reg);
+      rtl_sr(id_dest->reg, &id_dest->val, 4);
+      print_asm_template2(slli);
+      break;
+    case 2:                                                 //slti
+      id_dest->val = (signed)id_src->val < (signed)id_src2->val;
+      rtl_sr(id_dest->reg, &id_dest->val, 4);
+      print_asm_template2(slti);
+      break;
+    case 3:                                              //sltiu
+      id_dest->val = (unsigned)id_src->val < (unsigned)id_src2->val;
+      rtl_sr(id_dest->reg, &id_dest->val, 4);
+      print_asm_template2(sltiu);
+      break;
+    case 4:                                              //xori
+      rtl_xor(&id_dest->val, &id_src->val, &id_src2->val);
+      rtl_sr(id_dest->reg, &id_dest->val, 4);
+      print_asm_template2(xori);
+      break;
+    case 5:                                             // srli&&srai
+      if (decinfo.isa.instr.funct7 == 0b0000000) {    // srli
+        rtl_shr(&id_dest->val,&id_src->val,&id_src2->reg);
+        rtl_sr(id_dest->reg,&id_dest->val,4);
+        print_asm_template2(srli);
+      } else if (decinfo.isa.instr.funct7 == 0b0100000) {  // srai
+        rtl_sar(&id_dest->val, &id_src->val, &id_src2->reg);
+        rtl_sr(id_dest->reg, &id_dest->val, 4);
+        print_asm_template2(srai);
+      }
+      break;
+    case 6:                                               // ori
+      rtl_or(&id_dest->val, &id_src->val, &id_src2->val);
+      rtl_sr(id_dest->reg, &id_dest->val, 4);
+      print_asm_template2(ori);
+      break;
+    case 7:                                             // andi
+      rtl_and(&id_dest->val, &id_src->val, &id_src2->val);
+      rtl_sr(id_dest->reg, &id_dest->val, 4);
+      print_asm_template2(andi);
       break;
   }
 }
