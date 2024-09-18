@@ -30,8 +30,8 @@ make_EHelper(imm){
 
 make_EHelper(reg){
   switch (decinfo.isa.instr.funct3) {
-    case 0:  // add&&sub&&mul
-      if (decinfo.isa.instr.funct7 == 0b0000000) {  // add
+    case 0:  // add  &&  sub  &&  mul
+      if (decinfo.isa.instr.funct7 == 0b0000000) {        // add
         rtl_add(&id_dest->val, &id_src->val, &id_src2->val);
         rtl_sr(id_dest->reg, &id_dest->val, 4);
         print_asm_template3(add);
