@@ -87,6 +87,17 @@ make_EHelper(reg){
         print_asm_template3(mul);
       }
       break;
+    case 1:  // sll&&mulh
+      if (decinfo.isa.instr.funct7 == 0b0000000) {  // sll
+        rtl_shl(&id_dest->val, &id_src->val, &id_src2->val);
+        rtl_sr(id_dest->reg, &id_dest->val, 4);
+        print_asm_template3(sll);
+      } else if (decinfo.isa.instr.funct7 == 0b0000001) {  // mulh
+        rtl_imul_hi(&id_dest->val, &id_src->val, &id_src2->val);
+        rtl_sr(id_dest->reg, &id_dest->val, 4);
+        print_asm_template3(mulh);
+      }
+      break;
     case 4:  // xor&&div
       if (decinfo.isa.instr.funct7 == 0b0000000) {          // xor
         rtl_xor(&id_dest->val, &id_src->val, &id_src2->val);
