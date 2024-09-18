@@ -119,8 +119,8 @@ make_EHelper(reg){
         print_asm_template3(div);
       }
       break;
-    case 5:  // srl&&sra&&divu
-      if (decinfo.isa.instr.funct7 == 0b0000000) {  // srl
+    case 5:                                           // srl&&sra&&divu
+      if (decinfo.isa.instr.funct7 == 0b0000000) {    // srl
         rtl_shr(&id_dest->val, &id_src->val, &id_src2->val);
         rtl_sr(id_dest->reg, &id_dest->val, 4);
         print_asm_template2(srl);
@@ -134,7 +134,7 @@ make_EHelper(reg){
         print_asm_template3(divu);
       }
       break;
-    case 6:  // or&&rem
+    case 6:                                         // or&&rem
       if (decinfo.isa.instr.funct7 == 0b0000000) {  // or
         rtl_or(&id_dest->val, &id_src->val, &id_src2->val);
         rtl_sr(id_dest->reg, &id_dest->val, 4);
