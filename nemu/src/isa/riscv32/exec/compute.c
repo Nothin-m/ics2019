@@ -88,7 +88,7 @@ make_EHelper(reg){
       }
       break;
     case 1:  // sll&&mulh
-      if (decinfo.isa.instr.funct7 == 0b0000000) {  // sll
+      if (decinfo.isa.instr.funct7 == 0b0000000) {        // sll
         rtl_shl(&id_dest->val, &id_src->val, &id_src2->val);
         rtl_sr(id_dest->reg, &id_dest->val, 4);
         print_asm_template3(sll);
@@ -97,6 +97,16 @@ make_EHelper(reg){
         rtl_sr(id_dest->reg, &id_dest->val, 4);
         print_asm_template3(mulh);
       }
+      break;
+    case 2:  // slt
+      id_dest->val = (signed)id_src->val < (signed)id_src2->val;
+      rtl_sr(id_dest->reg, &id_dest->val, 4);
+      print_asm_template3(slt);
+      break;
+    case 3:  // sltu
+      id_dest->val = (unsigned)id_src->val < (unsigned)id_src2->val;
+      rtl_sr(id_dest->reg, &id_dest->val, 4);
+      print_asm_template3(sltu);
       break;
     case 4:  // xor&&div
       if (decinfo.isa.instr.funct7 == 0b0000000) {          // xor
