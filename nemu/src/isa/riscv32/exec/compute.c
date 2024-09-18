@@ -45,15 +45,26 @@ make_EHelper(reg){
         print_asm_template3(mul);
       }
       break;
-     case 4:  // xor&&div
-      if (decinfo.isa.instr.funct7 == 0b0000000) {  // xor
+    case 4:  // xor&&div
+      if (decinfo.isa.instr.funct7 == 0b0000000) {          // xor
         rtl_xor(&id_dest->val, &id_src->val, &id_src2->val);
         rtl_sr(id_dest->reg, &id_dest->val, 4);
         print_asm_template3(xor);
-      } else if (decinfo.isa.instr.funct7 == 0b0000001) {  // div
+      } else if (decinfo.isa.instr.funct7 == 0b0000001) {   // div
         rtl_idiv_q(&id_dest->val, &id_src->val, &id_src2->val);
         rtl_sr(id_dest->reg, &id_dest->val, 4);
         print_asm_template3(div);
+      }
+      break;
+    case 7:  // and&&remu
+      if (decinfo.isa.instr.funct7 == 0b0000000) {            // and
+        rtl_and(&id_dest->val, &id_src->val, &id_src2->val);
+        rtl_sr(id_dest->reg, &id_dest->val, 4);
+        print_asm_template3(and);
+      } else if (decinfo.isa.instr.funct7 == 0b0000001) {    // remu
+        rtl_div_r(&id_dest->val, &id_src->val, &id_src2->val);
+        rtl_sr(id_dest->reg, &id_dest->val, 4);
+        print_asm_template3(remu);
       }
       break;
   }
