@@ -1,6 +1,6 @@
 #include "common.h"
-
-static byte mmc_id;
+#include "fce.h"
+// static byte mmc_id;
 
 byte mmc_read(word address);
 void mmc_write(word address, byte data);

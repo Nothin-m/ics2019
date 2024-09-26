@@ -7,6 +7,8 @@
 #define W 256
 #define H 240
 
+byte mmc_id;
+
 void fce_update_screen();
 void draw(int x, int y, int idx);
 
