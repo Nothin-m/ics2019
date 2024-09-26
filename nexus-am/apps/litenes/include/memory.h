@@ -4,6 +4,8 @@
 #include "common.h"
 #include "mmc.h"
 
+// extern byte mmc_id;
+
 // Single byte
 byte memory_readb(word address);
 void memory_writeb(word address, byte data);
