@@ -24,3 +24,4 @@ make_EHelper(inv);
 make_EHelper(nemu_trap);
 
 // system.c
+make_EHelper(sys);

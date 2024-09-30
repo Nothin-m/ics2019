@@ -12,11 +12,11 @@ typedef struct {
 
   vaddr_t pc;
 
-  rtlreg_t sepc;
-  rtlreg_t sstatus;
-  rtlreg_t scause;
-  rtlreg_t stvec;
-  //加入寄存器
+  rtlreg_t sepc;     // 存放触发异常的PC
+  rtlreg_t sstatus;  // 存放处理器的状态
+  rtlreg_t scause;   // 存放触发异常的原因
+  rtlreg_t stvec;    // 异常入口地址
+  // 加入寄存器
 
 } CPU_state;
 
