@@ -11,23 +11,18 @@
 #endif
 
 static uintptr_t loader(PCB *pcb, const char *filename) {
-  TODO();
-  Elf_Ehdr head;
-  int fd = fs_open(filename, 0, 0);
-  fs_lseek(fd, 0, SEEK_SET);
-  fs_read(fd, &head, sizeof(head));
-  for (int i = 0; i < head.e_phnum; i++) {
-    Elf_Phdr temp;
-    fs_lseek(fd, head.e_phoff + i * head.e_phentsize, SEEK_SET);
-    fs_read(fd, &temp, sizeof(temp));
-    if (temp.p_type == PT_LOAD) {
-      fs_lseek(fd, temp.p_offset, SEEK_SET);
-      fs_read(fd, (void *)temp.p_vaddr, temp.p_filesz);
-      memset((void *)(temp.p_vaddr + temp.p_filesz), 0,
-             temp.p_memsz - temp.p_filesz);
+  // TODO();
+  Elf_Ehdr ehdr;
+  ramdisk_read((void *)&ehdr, 0, sizeof(Elf_Ehdr)); 
+  for (size_t i = 0; i < ehdr.e_phnum; ++i) { 
+    Elf_Phdr phdr;
+    ramdisk_read((void *)&phdr, ehdr.e_ehsize, sizeof(Elf_Phdr)*i);
+    if (phdr.p_type == PT_LOAD) { 
+      ramdisk_read((void *)phdr.p_vaddr, phdr.p_offset, phdr.p_memsz);                                     
+      memset((void *)(phdr.p_vaddr + phdr.p_filesz), 0, phdr.p_memsz - phdr.p_filesz);
     }
   }
-  return head.e_entry;
+  return ehdr.e_entry;
 }
 
 void naive_uload(PCB *pcb, const char *filename) {
