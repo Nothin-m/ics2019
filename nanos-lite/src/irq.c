@@ -5,12 +5,10 @@ static _Context* do_event(_Event e, _Context* c) {
     case _EVENT_YIELD:
       Log("self trap");
       break;
-    case _EVENT_SYSCALL:
+    case _EVENT_SYSCALL: 
       do_syscall(c);
       break;
-
-    default:
-      panic("Unhandled event ID = %d", e.event);
+    default:  panic("Unhandled event ID = %d", e.event);
   }
 
   return NULL;
