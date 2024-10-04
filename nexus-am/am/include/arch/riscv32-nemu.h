@@ -6,7 +6,7 @@ struct _Context {
   struct _AddressSpace *as;
 };
 
-//改变顺序
+//改变顺序 "a7", "a0", "a1", "a2", "a0"
 #define GPR1 gpr[17]
 #define GPR2 gpr[10]
 #define GPR3 gpr[11]
