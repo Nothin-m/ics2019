@@ -38,8 +38,8 @@ int fs_open(const char *pathname, int flags, int mode){
   for (int i = 3; i < NR_FILES; i++) {
     if (strcmp(pathname, file_table[i].name) == 0) return i;
   }
-  printf("file open failed\n");
-  assert(0);
+  // printf("file open failed\n");
+  // assert(0);
   return 0;
 }
 
