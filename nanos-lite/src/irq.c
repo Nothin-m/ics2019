@@ -7,6 +7,7 @@ static _Context* do_event(_Event e, _Context* c) {
       Log("self trap");
       break;
     case _EVENT_SYSCALL: 
+    Log("SYSCALL  ");
       do_syscall(c);
       break;
     default:  panic("Unhandled event ID = %d", e.event);
