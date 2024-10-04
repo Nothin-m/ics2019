@@ -11,7 +11,7 @@
 #endif
 
 static uintptr_t loader(PCB *pcb, const char *filename) {
-  TODO();
+  // TODO();
   Elf_Ehdr head;
   int fd = fs_open(filename, 0, 0);
   fs_lseek(fd, 0, SEEK_SET);
