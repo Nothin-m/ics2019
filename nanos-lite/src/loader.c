@@ -14,14 +14,15 @@
 
 static uintptr_t loader(PCB *pcb, const char *filename) {
   // TODO();
-  printf("000000000");
+  // printf("000000000");
   Elf_Ehdr ehdr;
   ramdisk_read((void *)&ehdr, 0, sizeof(Elf_Ehdr)); 
-   printf("111111111111");
+  //  printf("111111111111");
   for (size_t i = 0; i < ehdr.e_phnum; ++i) { 
     Elf_Phdr phdr;
     ramdisk_read((void *)&phdr, ehdr.e_ehsize, sizeof(Elf_Phdr)*i);
     if (phdr.p_type == PT_LOAD) { 
+      printf("33333333333\n");
       ramdisk_read((void *)phdr.p_vaddr, phdr.p_offset, phdr.p_memsz);                                     
        memset((void *)(phdr.p_vaddr + phdr.p_filesz), 0, phdr.p_memsz - phdr.p_filesz);
     }
