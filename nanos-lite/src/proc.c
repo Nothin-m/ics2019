@@ -30,8 +30,8 @@ void init_proc() {
   // naive_uload(NULL, "/bin/hello");
   // naive_uload(NULL, "/bin/text");
   // naive_uload(NULL, "/dev/fb");
-  naive_uload(NULL, "/dev/event");
-  // naive_uload(NULL, "/proc/dispinfo");
+  // naive_uload(NULL, "/dev/event");
+  naive_uload(NULL, "/proc/dispinfo");
 }
 
 _Context* schedule(_Context *prev) {
