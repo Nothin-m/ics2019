@@ -1,5 +1,6 @@
 #include "common.h"
-#include "am.h"
+
+_Context* do_syscall(_Context *c);
 
 static _Context* do_event(_Event e, _Context* c) {
   switch (e.event) {
@@ -7,10 +8,9 @@ static _Context* do_event(_Event e, _Context* c) {
       Log("self trap");
       break;
     case _EVENT_SYSCALL: 
-    // Log("SYSCALL  ");
-      do_syscall(c);
+      do_syscall(c);        
       break;
-    default:  panic("Unhandled event ID = %d", e.event);
+    default: panic("Unhandled event ID = %d", e.event);
   }
 
   return NULL;
