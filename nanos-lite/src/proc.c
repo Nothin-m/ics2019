@@ -29,8 +29,8 @@ void init_proc() {
   // load program here
   // naive_uload(NULL, "/bin/hello");
   // naive_uload(NULL, "/bin/text");
-  naive_uload(NULL, "/dev/fb");
-  // naive_uload(NULL, "/dev/event");
+  // naive_uload(NULL, "/dev/fb");
+  naive_uload(NULL, "/dev/event");
   // naive_uload(NULL, "/proc/dispinfo");
 }
 
