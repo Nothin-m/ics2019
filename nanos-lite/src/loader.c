@@ -25,8 +25,8 @@ static uintptr_t loader(PCB *pcb, const char *filename) {
     if(temp.p_type==PT_LOAD){
       fs_lseek(fd, temp.p_offset, SEEK_SET);
       fs_read(fd, (void *)temp.p_vaddr, temp.p_filesz);
-      // memset((void *)(temp.p_vaddr + temp.p_filesz), 0,
-      //        temp.p_memsz - temp.p_filesz);
+      memset((void *)(temp.p_vaddr + temp.p_filesz), 0,
+             temp.p_memsz - temp.p_filesz);
     }
   }
   return head.e_entry;

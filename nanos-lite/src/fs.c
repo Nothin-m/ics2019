@@ -38,6 +38,8 @@ static Finfo file_table[] __attribute__((used)) = {
   {"stdin", 0, 0, invalid_read, invalid_write},
   {"stdout", 0, 0, invalid_read, serial_write},
   {"stderr", 0, 0, invalid_read, serial_write},
+   {"/dev/fb", 0, 0, 0, invalid_read, fb_write},
+  {"/dev/events", 0, 0, 0, events_read, invalid_write},
 #include "files.h"
 };
 
@@ -45,8 +47,8 @@ static Finfo file_table[] __attribute__((used)) = {
 
 void init_fs() {
   // TODO: initialize the size of /dev/fb
+  file_table[FD_FB].size = screen_width() * screen_height() * 4;
 }
-
 
 int fs_open(const char *pathname, int flags, int mode){
   // printf(" %s\n", pathname);
@@ -74,7 +76,7 @@ size_t fs_read(int fd, void *buf, size_t len){
     len = file_table[fd].read( buf, file_table[fd].disk_offset + file_table[fd].open_offset, len);
   }
   file_table[fd].open_offset += len;
-  printf("success read\n");
+  // printf("success read\n");
   return len;
 }
 
@@ -98,7 +100,7 @@ size_t fs_write(int fd, const void *buf, size_t len){
     file_table[fd].open_offset += length;
   }
 
-  printf("success write\n");
+  // printf("success write\n");
   return length;
 }
 
@@ -115,7 +117,7 @@ size_t fs_lseek(int fd, size_t offset, int whence){
       file_table[fd].open_offset = file_table[fd].size + offset;
       break;
   }
-  printf("success lseek\n");
+  // printf("success lseek\n");
   return file_table[fd].open_offset;
 }
 
