@@ -1,6 +1,10 @@
 #include "proc.h"
+#include "fs.h"
 #include <elf.h>
-#include <fs.h>
+
+extern size_t ramdisk_read(void *, size_t, size_t);
+extern size_t ramdisk_write(const void*, size_t, size_t);
+extern void isa_vaddr_write(uint32_t, uint32_t, int);
 
 #ifdef __ISA_AM_NATIVE__
 # define Elf_Ehdr Elf64_Ehdr
@@ -10,28 +14,34 @@
 # define Elf_Phdr Elf32_Phdr
 #endif
 
-
 static uintptr_t loader(PCB *pcb, const char *filename) {
-  Elf_Ehdr head;
+  Elf_Ehdr Ehdr;
   int fd = fs_open(filename, 0, 0);
   fs_lseek(fd, 0, SEEK_SET);
-  fs_read(fd, &head, sizeof(head));
-  for (int i = 0; i < head.e_phnum; i++) {
-    Elf_Phdr temp;
-    fs_lseek(fd, head.e_phoff + i * head.e_phentsize, SEEK_SET);
-    fs_read(fd, &temp, sizeof(temp));
-    if(temp.p_type==PT_LOAD){
-      fs_lseek(fd, temp.p_offset, SEEK_SET);
-      fs_read(fd, (void *)temp.p_vaddr, temp.p_filesz);
-      memset((void *)(temp.p_vaddr + temp.p_filesz), 0,
-             temp.p_memsz - temp.p_filesz);
-    }
+  fs_read(fd, &Ehdr, sizeof(Ehdr));
+
+  for(int i = 0; i < Ehdr.e_phnum;i++){
+      Elf_Phdr Phdr;
+      fs_lseek(fd, Ehdr.e_phoff + i*Ehdr.e_phentsize, SEEK_SET);
+      //printf("res:%d\n", res);
+      fs_read(fd, &Phdr, sizeof(Phdr));
+
+      if(!(Phdr.p_type & PT_LOAD)){
+          continue;
+      }
+      fs_lseek(fd, Phdr.p_offset, SEEK_SET);
+      fs_read(fd, (void*)Phdr.p_vaddr, Phdr.p_filesz);
+      for(unsigned int i = Phdr.p_filesz; i < Phdr.p_memsz;i++){
+          ((char*)Phdr.p_vaddr)[i] = 0;
+      }
+  
   }
-  return head.e_entry;
+
+  return Ehdr.e_entry;
 }
 
 void naive_uload(PCB *pcb, const char *filename) {
-  uintptr_t entry = loader(pcb, filename);
+  intptr_t entry = loader(pcb, filename);
   Log("Jump to entry = %x", entry);
   ((void(*)())entry) ();
 }
