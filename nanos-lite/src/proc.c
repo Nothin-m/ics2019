@@ -31,7 +31,7 @@ void init_proc() {
   // naive_uload(NULL, "/bin/text");
   // naive_uload(NULL, "/dev/fb");
   // naive_uload(NULL, "/dev/event");
-  naive_uload(NULL, "/bin/pal");
+  naive_uload(NULL, "/dev/fbsync");
 }
 
 _Context* schedule(_Context *prev) {
