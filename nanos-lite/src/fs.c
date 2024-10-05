@@ -80,55 +80,37 @@ size_t fs_read(int fd, void *buf, size_t len){
   return len;
 }
 
-size_t fs_write(int fd, const void *buf, size_t len){
-  // printf("fd=%d, %s, len=%d", fd, buf, len);
-	assert(fd >= 0 && fd < NR_FILES);
 
-	int w_len = len;
-	if(file_table[fd].size > 0 && file_table[fd].open_offset + len > file_table[fd].size)
-		w_len = file_table[fd].size - file_table[fd].open_offset;
-	
-	assert(w_len >= 0);
-	
-	size_t length = 0;
-  if(file_table[fd].write == NULL)
-		length = ramdisk_write(buf, file_table[fd].disk_offset + file_table[fd].open_offset, w_len);
-	else
-		length = file_table[fd].write(buf, file_table[fd].disk_offset + file_table[fd].open_offset, w_len);
-  
-  file_table[fd].open_offset += length;
-	return length;
+
+size_t fs_write(int fd, const void *buf, size_t len){
+  size_t length = 0;
+  if (fd == 1 || fd == 2) {
+    for (int i = 0; i < len; i++) {
+      _putc(((char *)buf)[i]);
+    }
+    length = len;
+  }
+  if (file_table[fd].open_offset + len >= file_table[fd].size)
+    len = file_table[fd].size - file_table[fd].open_offset;
+  if (fd > 2) {
+    if(file_table[fd].write==NULL)
+      length = ramdisk_write(
+          buf, file_table[fd].disk_offset + file_table[fd].open_offset, len);
+    else
+      length = file_table[fd].write(
+          buf, file_table[fd].disk_offset + file_table[fd].open_offset, len);
+    file_table[fd].open_offset += length;
+  }
+
+  // printf("success write\n");
+  return length;
 }
 
 
-// size_t fs_write(int fd, const void *buf, size_t len){
-//   size_t length = 0;
-//   if (fd == 1 || fd == 2) {
-//     for (int i = 0; i < len; i++) {
-//       _putc(((char *)buf)[i]);
-//     }
-//     length = len;
-//   }
-//   if (file_table[fd].open_offset + len >= file_table[fd].size)
-//     len = file_table[fd].size - file_table[fd].open_offset;
-//   if (fd > 2) {
-//     if(file_table[fd].write==NULL)
-//       length = ramdisk_write(
-//           buf, file_table[fd].disk_offset + file_table[fd].open_offset, len);
-//     else
-//       length = file_table[fd].write(
-//           buf, file_table[fd].disk_offset + file_table[fd].open_offset, len);
-//     file_table[fd].open_offset += length;
-//   }
-
-//   // printf("success write\n");
-//   return length;
-// }
 
 
 
 size_t fs_lseek(int fd, size_t offset, int whence){
-  assert(fd >= 0 && fd < NR_FILES);
   switch (whence) {
     case SEEK_SET:
       file_table[fd].open_offset = offset;
@@ -139,28 +121,10 @@ size_t fs_lseek(int fd, size_t offset, int whence){
     case SEEK_END:
       file_table[fd].open_offset = file_table[fd].size + offset;
       break;
-    default:
-      panic("There is no such whence");
   }
-  assert(file_table[fd].open_offset <= file_table[fd].size);
-	return file_table[fd].open_offset;
+  // printf("success lseek\n");
+  return file_table[fd].open_offset;
 }
-
-// size_t fs_lseek(int fd, size_t offset, int whence){
-//   switch (whence) {
-//     case SEEK_SET:
-//       file_table[fd].open_offset = offset;
-//       break;
-//     case SEEK_CUR:
-//       file_table[fd].open_offset += offset;
-//       break;
-//     case SEEK_END:
-//       file_table[fd].open_offset = file_table[fd].size + offset;
-//       break;
-//   }
-//   // printf("success lseek\n");
-//   return file_table[fd].open_offset;
-// }
 
 int fs_close(int fd){
   file_table[fd].open_offset = 0;
