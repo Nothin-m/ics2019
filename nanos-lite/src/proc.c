@@ -29,7 +29,7 @@ void init_proc() {
   // load program here
   // naive_uload(NULL, "/bin/hello");
   // naive_uload(NULL, "/bin/text");
-  naive_uload(NULL, "/bin/pal");
+  naive_uload(NULL, "/bin/init");
 }
 
 _Context* schedule(_Context *prev) {
