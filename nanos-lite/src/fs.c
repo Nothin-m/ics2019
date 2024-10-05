@@ -49,10 +49,10 @@ void init_fs() {
 
 
 int fs_open(const char *pathname, int flags, int mode){
-  printf(" %s\n", pathname);
+  // printf(" %s\n", pathname);
   for (int i = 3; i < NR_FILES; i++) {
     if (strcmp(pathname, file_table[i].name) == 0){
-      printf("%d \n", i);
+      // printf("%d \n", i);
       return i;
     }
   }
@@ -69,13 +69,12 @@ size_t fs_read(int fd, void *buf, size_t len){
   if (len < 0) len = 0;
 
   if (file_table[fd].read == NULL){
-    ramdisk_read(buf, file_table[fd].disk_offset + file_table[fd].open_offset,
-                 len);
+    ramdisk_read(buf, file_table[fd].disk_offset + file_table[fd].open_offset, len);
   } else {
-    len = file_table[fd].read(
-        buf, file_table[fd].disk_offset + file_table[fd].open_offset, len);
+    len = file_table[fd].read( buf, file_table[fd].disk_offset + file_table[fd].open_offset, len);
   }
   file_table[fd].open_offset += len;
+  printf("success read\n");
   return len;
 }
 
@@ -98,8 +97,9 @@ size_t fs_write(int fd, const void *buf, size_t len){
           buf, file_table[fd].disk_offset + file_table[fd].open_offset, len);
     file_table[fd].open_offset += length;
   }
-  return length;
 
+  printf("success write\n");
+  return length;
 }
 
 
@@ -115,6 +115,7 @@ size_t fs_lseek(int fd, size_t offset, int whence){
       file_table[fd].open_offset = file_table[fd].size + offset;
       break;
   }
+  printf("success lseek\n");
   return file_table[fd].open_offset;
 }
 
